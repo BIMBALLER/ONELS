@@ -36,6 +36,14 @@ body.menu-open {
     overflow: hidden;
 }
 
+.header.header-scrolled {
+    background: var(--dark);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.header.header-scrolled .nav-list a {
+    color: var(--white);
+}
 .header {
   position: fixed;
   top: 0;

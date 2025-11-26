@@ -326,7 +326,7 @@ body {
 }
 
 .footer {
-  background: var(--orange);
+  background: var(--dark);
   color: white;
   text-align: center;
   padding: 3.5rem 0;

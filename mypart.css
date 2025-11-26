@@ -244,9 +244,8 @@ ul {
     transform: translateY(-3px);
 }
 
-/* --- Footer --- */
 .footer {
-    background: var(--orange);
+    background: var(--dark);
     color: white;
     text-align: center;
     padding: 3rem 0;

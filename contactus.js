@@ -4,6 +4,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const navList = document.querySelector('.nav-list');
     const contactForm = document.querySelector('.contact-form');
     const infoBoxes = document.querySelectorAll('.info-box');
+  
+
+    const header = document.querySelector('.header');
+    const scrollThreshold = 50; 
+
+    const changeHeaderColor = () => {
+        if (header) {
+            if (window.scrollY > scrollThreshold) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        }
+    };
+
+    window.addEventListener('scroll', changeHeaderColor);
+
+    changeHeaderColor(); 
 
     if (menuToggle && navList) {
         menuToggle.addEventListener('click', () => {
