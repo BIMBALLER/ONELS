@@ -1,4 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- Navbar ---
     const header = document.querySelector('.header');
     const menuToggle = document.querySelector('.menu-toggle');
     const navList = document.querySelector('.nav-list');
@@ -29,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Service Modal ---
     const serviceButtons = document.querySelectorAll('.book-service-btn');
     const modal = document.getElementById('serviceModal');
     const modalClose = modal.querySelector('.close');
@@ -45,16 +48,24 @@ document.addEventListener('DOMContentLoaded', () => {
     modalClose.addEventListener('click', () => { modal.style.display = 'none'; });
     window.addEventListener('click', e => { if(e.target == modal){ modal.style.display = 'none'; }});
 
+    // --- Payment Section ---
     const paymentSection = document.getElementById('paymentSection');
     const successSection = document.getElementById('successSection');
     const paymentSummary = document.getElementById('paymentSummary');
     const transactionDetails = document.getElementById('transactionDetails');
 
+    let currentTrackingID = '';
+
     serviceForm.addEventListener('submit', e => {
         e.preventDefault();
         const formData = new FormData(serviceForm);
+
+        // Generate tracking ID
+        currentTrackingID = 'ONL' + Math.floor(100000 + Math.random() * 900000);
+
         const summaryHTML = `
             <h3>Service: ${modalTitle.textContent}</h3>
+            <p><strong>Tracking ID:</strong> ${currentTrackingID}</p>
             <p><strong>Sender:</strong> ${formData.get('senderName')} (${formData.get('senderPhone')}, ${formData.get('senderEmail')})</p>
             <p><strong>Receiver:</strong> ${formData.get('receiverName')} (${formData.get('receiverPhone')}, ${formData.get('receiverEmail')})</p>
             <p><strong>Package:</strong> ${formData.get('packageDesc')} (${formData.get('packageWeight')} kg)</p>
@@ -66,43 +77,24 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: paymentSection.offsetTop, behavior: 'smooth' });
     });
 
-    serviceForm.addEventListener('submit', e => {
-    e.preventDefault();
+    // --- Payment Simulation ---
+    const simulatePaymentSuccess = (method) => {
+        transactionDetails.innerHTML = `
+            <p><strong>Tracking ID:</strong> ${currentTrackingID}</p>
+            <p><strong>Payment Method:</strong> ${method}</p>
+            <p><strong>Transaction ID:</strong> ${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+            <p><strong>Amount Paid:</strong> $${(Math.random()*100+20).toFixed(2)}</p>
+        `;
+        paymentSection.style.display = 'none';
+        successSection.style.display = 'block';
+        window.scrollTo({ top: successSection.offsetTop, behavior: 'smooth' });
+    };
 
-    const formData = new FormData(serviceForm);
+    document.getElementById('flutterwave-pay').addEventListener('click', () => simulatePaymentSuccess('Flutterwave'));
+    document.getElementById('stripe-pay').addEventListener('click', () => simulatePaymentSuccess('Stripe'));
+    document.getElementById('bank-pay').addEventListener('click', () => simulatePaymentSuccess('Bank Transfer'));
 
-    const trackingID = 'ONL' + Math.floor(100000 + Math.random() * 900000);
-
-    const summaryHTML = `
-        <h3>Service: ${modalTitle.textContent}</h3>
-        <p><strong>Tracking ID:</strong> ${trackingID}</p>
-        <p><strong>Sender:</strong> ${formData.get('senderName')} (${formData.get('senderPhone')}, ${formData.get('senderEmail')})</p>
-        <p><strong>Receiver:</strong> ${formData.get('receiverName')} (${formData.get('receiverPhone')}, ${formData.get('receiverEmail')})</p>
-        <p><strong>Package:</strong> ${formData.get('packageDesc')} (${formData.get('packageWeight')} kg)</p>
-        <p><strong>Delivery Option:</strong> ${formData.get('deliveryOption')}</p>
-    `;
-    paymentSummary.innerHTML = summaryHTML;
-    
-    serviceForm.dataset.trackingId = trackingID;
-
-    modal.style.display = 'none';
-    paymentSection.style.display = 'block';
-    window.scrollTo({ top: paymentSection.offsetTop, behavior: 'smooth' });
-});
-
-const simulatePaymentSuccess = (method) => {
-    const trackingID = serviceForm.dataset.trackingId || 'ONL000000';
-    transactionDetails.innerHTML = `
-        <p><strong>Tracking ID:</strong> ${trackingID}</p>
-        <p><strong>Payment Method:</strong> ${method}</p>
-        <p><strong>Transaction ID:</strong> ${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
-        <p><strong>Amount Paid:</strong> $${(Math.random()*100+20).toFixed(2)}</p>
-    `;
-    paymentSection.style.display = 'none';
-    successSection.style.display = 'block';
-    window.scrollTo({ top: successSection.offsetTop, behavior: 'smooth' });
-};
-
+    // --- PayPal Button Integration ---
     paypal.Buttons({
         createOrder: function(data, actions) {
             return actions.order.create({
