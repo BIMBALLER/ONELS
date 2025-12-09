@@ -234,7 +234,10 @@ body.menu-open {
 .status-line span:first-child {
     color: #555;
 }
-
+#map {
+  border: 3px solid var(--orange);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
 .footer {
      background: var(--dark); 
      color: white; 

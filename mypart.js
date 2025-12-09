@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const header = document.querySelector('.header');
     const menuToggle = document.querySelector('.menu-toggle');
     const navList = document.querySelector('.nav-list');
@@ -7,73 +6,116 @@ document.addEventListener('DOMContentLoaded', () => {
     if (menuToggle && navList) {
         menuToggle.addEventListener('click', () => {
             navList.classList.toggle('active');
-            
             document.body.classList.toggle('menu-open'); 
             const icon = menuToggle.querySelector('i');
             if (icon) {
-                if (navList.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                } else {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
             }
         });
-
         document.querySelectorAll('.nav-list a').forEach(link => {
             link.addEventListener('click', () => {
-                if(navList.classList.contains('active')) {
-                    navList.classList.remove('active');
-                    document.body.classList.remove('menu-open');
-                    // Reset icon
-                    const icon = menuToggle.querySelector('i');
-                    if (icon) {
-                         icon.classList.remove('fa-times');
-                         icon.classList.add('fa-bars');
-                    }
-                }
+                navList.classList.remove('active');
+                document.body.classList.remove('menu-open');
+                const icon = menuToggle.querySelector('i');
+                if(icon){ icon.classList.remove('fa-times'); icon.classList.add('fa-bars'); }
             });
         });
     }
 
     if (header) {
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled'); 
-            } else {
-                header.classList.remove('scrolled');
-            }
+            header.classList.toggle('scrolled', window.scrollY > 50);
         });
     }
 
+    const serviceButtons = document.querySelectorAll('.book-service-btn');
+    const modal = document.getElementById('serviceModal');
+    const modalClose = modal.querySelector('.close');
+    const modalTitle = document.getElementById('modalServiceName');
+    const serviceForm = document.getElementById('serviceForm');
 
-    const targets = document.querySelectorAll('[data-aos], .service-card');
-    
-    const uniqueTargets = Array.from(new Set(targets));
-
-    uniqueTargets.forEach(element => {
-        if (!element.classList.contains('fade-up')) {
-            element.classList.add('fade-up');
-        }
-    });
-    
-    const observerOptions = {
-        root: null, 
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('reveal');
-  
-                observer.unobserve(entry.target);
-            }
+    serviceButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            modal.style.display = 'block';
+            modalTitle.textContent = btn.dataset.service;
         });
-    }, observerOptions);
-    uniqueTargets.forEach(target => {
-        observer.observe(target);
     });
+
+    modalClose.addEventListener('click', () => { modal.style.display = 'none'; });
+    window.addEventListener('click', e => { if(e.target == modal){ modal.style.display = 'none'; }});
+
+    const paymentSection = document.getElementById('paymentSection');
+    const successSection = document.getElementById('successSection');
+    const paymentSummary = document.getElementById('paymentSummary');
+    const transactionDetails = document.getElementById('transactionDetails');
+
+    serviceForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const formData = new FormData(serviceForm);
+        const summaryHTML = `
+            <h3>Service: ${modalTitle.textContent}</h3>
+            <p><strong>Sender:</strong> ${formData.get('senderName')} (${formData.get('senderPhone')}, ${formData.get('senderEmail')})</p>
+            <p><strong>Receiver:</strong> ${formData.get('receiverName')} (${formData.get('receiverPhone')}, ${formData.get('receiverEmail')})</p>
+            <p><strong>Package:</strong> ${formData.get('packageDesc')} (${formData.get('packageWeight')} kg)</p>
+            <p><strong>Delivery Option:</strong> ${formData.get('deliveryOption')}</p>
+        `;
+        paymentSummary.innerHTML = summaryHTML;
+        modal.style.display = 'none';
+        paymentSection.style.display = 'block';
+        window.scrollTo({ top: paymentSection.offsetTop, behavior: 'smooth' });
+    });
+
+    serviceForm.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const formData = new FormData(serviceForm);
+
+    const trackingID = 'ONL' + Math.floor(100000 + Math.random() * 900000);
+
+    const summaryHTML = `
+        <h3>Service: ${modalTitle.textContent}</h3>
+        <p><strong>Tracking ID:</strong> ${trackingID}</p>
+        <p><strong>Sender:</strong> ${formData.get('senderName')} (${formData.get('senderPhone')}, ${formData.get('senderEmail')})</p>
+        <p><strong>Receiver:</strong> ${formData.get('receiverName')} (${formData.get('receiverPhone')}, ${formData.get('receiverEmail')})</p>
+        <p><strong>Package:</strong> ${formData.get('packageDesc')} (${formData.get('packageWeight')} kg)</p>
+        <p><strong>Delivery Option:</strong> ${formData.get('deliveryOption')}</p>
+    `;
+    paymentSummary.innerHTML = summaryHTML;
+    
+    serviceForm.dataset.trackingId = trackingID;
+
+    modal.style.display = 'none';
+    paymentSection.style.display = 'block';
+    window.scrollTo({ top: paymentSection.offsetTop, behavior: 'smooth' });
+});
+
+const simulatePaymentSuccess = (method) => {
+    const trackingID = serviceForm.dataset.trackingId || 'ONL000000';
+    transactionDetails.innerHTML = `
+        <p><strong>Tracking ID:</strong> ${trackingID}</p>
+        <p><strong>Payment Method:</strong> ${method}</p>
+        <p><strong>Transaction ID:</strong> ${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+        <p><strong>Amount Paid:</strong> $${(Math.random()*100+20).toFixed(2)}</p>
+    `;
+    paymentSection.style.display = 'none';
+    successSection.style.display = 'block';
+    window.scrollTo({ top: successSection.offsetTop, behavior: 'smooth' });
+};
+
+    paypal.Buttons({
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: { value: "50.00" } 
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                simulatePaymentSuccess('PayPal');
+            });
+        }
+    }).render('#paypal-button-container');
+
 });

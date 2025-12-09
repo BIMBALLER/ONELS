@@ -79,3 +79,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+const map = L.map('nigeria-map').setView([9.082, 8.6753], 6);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap'
+}).addTo(map);
+
+const locations = [
+  { name: "Offa - Head Office", coords: [8.1499, 4.7264] },
+  { name: "Ilorin Hub", coords: [8.4966, 4.5421] },
+  { name: "Lagos Hub", coords: [6.5244, 3.3792] },
+  { name: "Abuja Hub", coords: [9.0765, 7.3986] },
+  { name: "Port Harcourt Hub", coords: [4.8156, 7.0498] }
+];
+
+locations.forEach(loc => {
+  L.marker(loc.coords)
+    .addTo(map)
+    .bindPopup(`<b>${loc.name}</b>`);
+});

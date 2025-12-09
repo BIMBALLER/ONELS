@@ -4,59 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="footer.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 </head>
 <body>
-      <header class="header">
-    <nav class="nav container">
-      <div class="logo">
-        <a href="index.html"><svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
-  <!-- Falcon Body (Sharp & Fast) -->
-  <path d="M10 40 Q30 20 50 40 T90 40" fill="none" stroke="#ffa500" stroke-width="4" />
-  <!-- Wings (Speed Lines) -->
-  <path d="M20 30 L10 10 M40 35 L30 15 M60 40 L50 20" stroke="#ffa500" stroke-width="3" fill="none" />
-  <!-- Peacock Tail Feathers (Offa Touch) -->
-  <path d="M90 40 Q120 20 140 40 Q160 60 180 40" fill="#FFFFFF" stroke="#ffa500" stroke-width="3" />
-  <!-- Feather Eyes (Trustworthy Gaze) -->
-  <circle cx="110" cy="30" r="3" fill="#ffa500" />
-  <circle cx="130" cy="35" r="2" fill="#FFFFFF" />
-  <circle cx="150" cy="30" r="3" fill="#ffa500" />
-  <!-- Text: ONELS -->
-  <text x="10" y="65" font-family="Segoe UI, sans-serif" font-size="24" font-weight="900" fill="#FFFFFF">ONELS</text>
-</svg></a>
-      </div>
-      <button class="menu-toggle" aria-label="Open menu">
-        <i class="fas fa-bars"></i>
-      </button>
-      <ul class="nav-list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="bbnew.html">About</a></li>
-        <li><a href="mypart.html">Services</a></li>
-        <li><a href="footer.html">Tracking</a></li>
-        <li><a href="contactus.html">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-    <section id="home" class="hero">
-    <img src="cf32cd2c-9e2b-4fd8-b33a-b114c86ea89f.jpeg" alt="ONELS Truck Fleet" class="hero-bg" loading="lazy">
-    <div class="hero-overlay"></div>
-    <div class="hero-content container">
-      <h1>TRACK. YOUR. SHIPMENT.</h1>
+
+<header class="header">
+  <nav class="nav container">
+    <div class="logo">
+      <a href="index.html">
+        <svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 40 Q30 20 50 40 T90 40" fill="none" stroke="#ffa500" stroke-width="4"/>
+                    <path d="M20 30 L10 10 M40 35 L30 15 M60 40 L50 20" stroke="#ffa500" stroke-width="3" fill="none"/>
+                    <path d="M90 40 Q120 20 140 40 Q160 60 180 40" fill="#FFFFFF" stroke="#ffa500" stroke-width="3"/>
+                    <circle cx="110" cy="30" r="3" fill="#ffa500"/>
+                    <circle cx="130" cy="35" r="2" fill="#FFFFFF"/>
+                    <circle cx="150" cy="30" r="3" fill="#ffa500"/>
+                    <text x="10" y="65" font-family="Segoe UI, sans-serif" font-size="24" font-weight="900" fill="#FFFFFF">ONELS</text>
+                </svg>
+      </a>
     </div>
-  </section>
-  <div class="btn-sec">
-    <div class="btn-1">
-      <input type="text" class="btnn1" placeholder="Enter tracking number e.g(ONL123456)">
-      <button class="btnn2"><h2 class="color2">Track Now</h2></button>
+
+    <button class="menu-toggle" aria-label="Open menu">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="bbnew.html">About</a></li>
+      <li><a href="mypart.html">Services</a></li>
+      <li><a href="footer.html">Tracking</a></li>
+      <li><a href="contactus.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section id="home" class="hero">
+  <img src="cf32cd2c-9e2b-4fd8-b33a-b114c86ea89f.jpeg" alt="ONELS Truck Fleet" class="hero-bg" loading="lazy">
+  <div class="hero-overlay"></div>
+  <div class="hero-content container">
+    <h1>TRACK. YOUR. SHIPMENT.</h1>
   </div>
+</section>
+
+<div class="btn-sec">
+  <div class="btn-1">
+    <input type="text" class="btnn1" placeholder="Enter tracking number e.g(ONL123456)">
+    <button class="btnn2"><h2 class="color2">Track Now</h2></button>
   </div>
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2025 ONELS Logistics • Offa, Kwara State • Proudly Nigerian</p>
-    </div>
-  </footer>
-  <script src="footer.js"></script>  
+</div>
+
+<div id="map" style="width:100%; max-width:900px; height:400px; margin:40px auto; border-radius:12px;"></div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2025 ONELS Logistics • Offa, Kwara State • Proudly Nigerian</p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="footer.js"></script>
 </body>
 </html>
